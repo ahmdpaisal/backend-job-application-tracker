@@ -16,11 +16,8 @@ Route::middleware('auth:api')->group(function () {
 
     //Auth routes
     Route::controller(AuthController::class)->group(function () {
+        Route::get('/current-user', 'currentUser');
         Route::post('/logout', 'logout');
-    });
-
-    Route::get('/user', function (Request $request) {
-        return $request->user();
     });
     
 });

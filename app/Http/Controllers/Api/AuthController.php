@@ -35,7 +35,7 @@ class AuthController extends BaseController
         }
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request): JsonResponse {
         try {
             $this->authService->logout($request->user());
 
@@ -44,7 +44,18 @@ class AuthController extends BaseController
         } catch (Exception $e) {
             return $this->errorResponse(500, 'Internal server error', $e->getMessage());
         }
-        
+    }
+
+    public function currentUser(Request $request): JsonResponse {
+
+        try {
+            
+            return $this->successResponse(200, 'Get user info successfully', $request->user());
+
+        } catch (Exception $e) {
+            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+        }
+
     }
 
 }

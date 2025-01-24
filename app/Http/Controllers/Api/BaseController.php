@@ -14,7 +14,7 @@ class BaseController extends Controller
     public function successResponse(
         int $statusCode = Response::HTTP_OK,
         string $message = '',
-        array $result = []
+        $result
     ): JsonResponse {
 
         $response = [
