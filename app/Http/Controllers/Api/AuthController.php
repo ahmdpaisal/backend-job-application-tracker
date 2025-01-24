@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Classes\ApiResponseClass;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Services\Api\AuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     protected $authService;
 
@@ -25,13 +27,21 @@ class AuthController extends BaseController
             $result = $this->authService->login($credentials);
 
             if (!$result) {
-                return $this->errorResponse(401, 'Invalid credentials', []);
+                return ApiResponseClass::sendResponse(
+                    401,
+                    'Invalid credentials',
+                    []
+                );
             }
 
-            return $this->successResponse(200, 'Create token successfully', $result);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Create token successfully',
+                $result
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -39,10 +49,14 @@ class AuthController extends BaseController
         try {
             $this->authService->logout($request->user());
 
-            return $this->successResponse(200, 'Logout successfully', []);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Logout successfully',
+                []
+            );
             
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -50,10 +64,14 @@ class AuthController extends BaseController
 
         try {
             
-            return $this->successResponse(200, 'Get user info successfully', $request->user());
+            return ApiResponseClass::sendResponse(
+                200,
+                'Get user info successfully',
+                $request->user()
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
 
     }

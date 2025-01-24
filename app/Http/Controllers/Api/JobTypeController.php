@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\BaseController;
+use App\Classes\ApiResponseClass;
+use App\Http\Controllers\Controller;
 use App\Services\Api\JobTypeService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class JobTypeController extends BaseController
+class JobTypeController extends Controller
 {
     
     protected $jobTypeService;
@@ -23,10 +24,14 @@ class JobTypeController extends BaseController
 
             $jobTypes = $this->jobTypeService->getJobTypes();
 
-            return $this->successResponse(200, 'Job Types fetched successfully', $jobTypes);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Job types fethed successfully',
+                $jobTypes
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -38,10 +43,14 @@ class JobTypeController extends BaseController
 
             $jobType = $this->jobTypeService->createJobType($data);
 
-            return $this->successResponse(201, 'New job type created successfully', $jobType);
+            return ApiResponseClass::sendResponse(
+                201,
+                'New job type created successfully',
+                $jobType
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -52,13 +61,21 @@ class JobTypeController extends BaseController
             $jobType = $this->jobTypeService->getJobTypeById($id);
 
             if (!$jobType) {
-                return $this->errorResponse(404, 'Job type not found', []);
+                return ApiResponseClass::sendResponse(
+                    404,
+                    'Job type not found',
+                    []
+                );
             }
 
-            return $this->successResponse(200, 'Job type fetch successfully', $jobType);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Job type fetch successfully',
+                $jobType
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -71,13 +88,21 @@ class JobTypeController extends BaseController
             $jobType = $this->jobTypeService->updateJobType($data, $id);
 
             if (!$jobType) {
-                return $this->errorResponse(404, 'Job type not found', []);
+                return ApiResponseClass::sendResponse(
+                    404,
+                    'Job type not found',
+                    []
+                );
             }
 
-            return $this->successResponse(200, 'Job type updated successfully', $jobType);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Job type updated successfully',
+                $jobType
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
@@ -87,13 +112,21 @@ class JobTypeController extends BaseController
             $jobType = $this->jobTypeService->deleteJobType($id);
 
             if (!$jobType) {
-                return $this->errorResponse(404, 'Job type not found', []);
+                return ApiResponseClass::sendResponse(
+                    404,
+                    'Job type not found',
+                    []
+                );
             }
 
-            return $this->successResponse(200, 'Job type deleted successfully', []);
+            return ApiResponseClass::sendResponse(
+                200,
+                'Job type deleted successfully',
+                []
+            );
 
         } catch (Exception $e) {
-            return $this->errorResponse(500, 'Internal server error', $e->getMessage());
+            return ApiResponseClass::throw($e);
         }
     }
 
